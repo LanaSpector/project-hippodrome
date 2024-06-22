@@ -29,6 +29,7 @@ public class Horse {
     }
 
     public String getName() {
+
         return name;
     }
 
