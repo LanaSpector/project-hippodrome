@@ -1,5 +1,8 @@
+import lombok.ToString;
+
 import static java.util.Objects.isNull;
 
+@ToString
 public class Horse {
 
     private final String name;

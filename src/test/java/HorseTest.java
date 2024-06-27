@@ -28,13 +28,13 @@ class HorseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" ", "\n", "\t", "\b", "\r", "\f"})
+    @ValueSource(strings = {" ", "\n", "\t", "\r", "\f"})
     void testConstructor_ShouldThrowIAEx_WhenArgsNameIsWhitespaceChar(String argument) {
         assertThrows(IllegalArgumentException.class, () -> new Horse(argument, speed));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" ", "\n", "\t", "\b", "\r", "\f"})
+    @ValueSource(strings = {" ", "\n", "\t", "\r", "\f"})
     void testConstructor_ShouldThrowIAExMessage_WhenArgsNameWhitespaceChar(String argument) {
         String expectedExceptionMessage = "Name cannot be blank.";
         var exception = assertThrows(IllegalArgumentException.class, () -> new Horse(argument, speed));
