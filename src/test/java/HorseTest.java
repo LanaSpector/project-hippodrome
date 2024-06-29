@@ -1,8 +1,14 @@
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 
@@ -139,6 +145,29 @@ class HorseTest {
         double actualDistance = (double) field.get(horse);
 
         assertEquals(expectedDistance, actualDistance);
+    }
+
+    @Test
+    void test() {
+        try (MockedStatic<Horse> mockedStatic = Mockito.mockStatic(Horse.class)) {
+            Horse horse = new Horse(name, speed, distance);
+            horse.move();
+
+            mockedStatic.verify(() -> Horse.getRandomDouble(ArgumentMatchers.anyDouble(), ArgumentMatchers.eq(0.9)));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {0, 0.2, 0.5, 0.9, 1, 10, 1000})
+    void test2(double fakeValue) {
+        Horse horse = new Horse(name, speed, distance);
+        double expectedDistance = horse.getDistance() + horse.getSpeed() * fakeValue;
+        try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
+            horseMockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(fakeValue);
+            horse.move();
+            double actualDistance = horse.getDistance();
+            assertEquals(expectedDistance, actualDistance);
+        }
     }
 
 
